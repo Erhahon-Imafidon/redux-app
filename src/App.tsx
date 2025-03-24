@@ -1,5 +1,11 @@
+import Counter from './features/counter/Counter.tsx';
+
 const App = () => {
-    return <div>App</div>;
+    return (
+        <main>
+            <Counter />
+        </main>
+    );
 };
 
 export default App;

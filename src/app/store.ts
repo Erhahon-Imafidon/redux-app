@@ -3,7 +3,6 @@ import counterSlice from '../features/counter/counterSlice.ts';
 
 export const store = configureStore({
     reducer: {
-        // Add the generated reducer as a specific top-level slice
         counter: counterSlice,
     },
 });
