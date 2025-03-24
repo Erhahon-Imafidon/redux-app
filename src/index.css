@@ -1,1 +1,25 @@
 @import 'tailwindcss';
+
+body {
+    @apply min-h-screen text-[5rem] grid place-content-center;
+}
+
+input, button {
+    @apply font-[inherit] p-2;
+}
+
+section {
+    @apply flex flex-col gap-4 items-center justify-center;
+}
+
+input {
+    @apply text-center max-w-10;
+}
+
+button {
+    @apply text-[2rem] my-2 ml-2 min-w-8;
+}
+
+button:first-child {
+    @apply ml-0;
+}
