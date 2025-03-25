@@ -1,9 +1,9 @@
-import Counter from './features/counter/Counter.tsx';
+import { PostsList } from './components/index.ts';
 
 const App = () => {
     return (
-        <main className="container min-h-screen">
-            <Counter />
+        <main className="container h-full">
+            <PostsList />
         </main>
     );
 };
