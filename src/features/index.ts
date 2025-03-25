@@ -1,3 +1,3 @@
-import postsSlice from './posts/postSlice.ts';
+import postsReducer from './posts/postSlice.ts';
 
-export { postsSlice };
+export { postsReducer };

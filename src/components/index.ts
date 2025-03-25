@@ -1,3 +1,4 @@
 import CounterButton from './CounterButton.tsx';
+import PostsList from './PostsList.tsx';
 
-export { CounterButton };
+export { CounterButton, PostsList };
