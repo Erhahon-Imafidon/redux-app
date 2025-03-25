@@ -1,5 +1,6 @@
 import { useAppSelector } from '../../app/hooks.ts';
 import { selectAllPosts } from '../../features/posts/postSlice.ts';
+import PostAuthor from './PostAuthor.tsx';
 
 const PostsList = () => {
     const posts = useAppSelector(selectAllPosts);
@@ -9,6 +10,9 @@ const PostsList = () => {
             <h2 className="text-3xl">{post.title}</h2>
             <p className="text-[1.2rem] my-2">
                 {post.content.substring(0, 100)}
+            </p>
+            <p className="text-base">
+                <PostAuthor userId={post.userId} />
             </p>
         </article>
     ));

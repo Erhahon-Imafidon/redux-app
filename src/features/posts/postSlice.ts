@@ -5,7 +5,7 @@ export interface PostSliceState {
     id: string;
     title: string;
     content: string;
-    userId: string;
+    userId?: string;
 }
 
 const initialState: PostSliceState[] = [
@@ -13,7 +13,6 @@ const initialState: PostSliceState[] = [
         id: '1',
         title: 'Learning Redux Toolkit',
         content: 'Redux Toolkit is the recommended way to write Redux logic.',
-        userId: '0',
     },
 
     {
