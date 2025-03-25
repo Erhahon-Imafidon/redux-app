@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import { useAppDispatch } from '../../app/hooks.ts';
+import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
 import { postsAdded } from '../../features/posts/postSlice.ts';
+import { selectAllUsers } from '../../features/users/userSlice.ts';
 
 const AddPostForm = () => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+    const [userId, setUserId] = useState('');
     const dispatch = useAppDispatch();
+    const users = useAppSelector(selectAllUsers);
 
     const onTitleChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value);
@@ -15,13 +18,25 @@ const AddPostForm = () => {
         setContent(e.target.value);
     };
 
+    const onAuthorChanged = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setUserId(e.target.value);
+    };
+
     const savePostClicked = () => {
         if (title && content) {
-            dispatch(postsAdded(title, content));
+            dispatch(postsAdded(title, content, userId));
             setTitle('');
             setContent('');
         }
     };
+
+    const canSave = title && content && userId;
+
+    const userOptions = users.map((user) => (
+        <option key={user.id} value={user.id}>
+            {user.name}
+        </option>
+    ));
 
     return (
         <section className="w-full max-w-125 mx-auto mx- mt-20">
@@ -39,6 +54,19 @@ const AddPostForm = () => {
                     className="rounded-lg bg-white p-4 text-blue-950"
                 />
 
+                <label htmlFor="postAuthor" className="text-2xl">
+                    Author:
+                </label>
+                <select
+                    id="postAuthor"
+                    value={userId}
+                    onChange={onAuthorChanged}
+                    className="rounded-lg bg-white p-4 text-blue-950"
+                >
+                    <option value=""></option>
+                    {userOptions}
+                </select>
+
                 <label htmlFor="postContent" className="text-2xl">
                     Post Content:
                 </label>
@@ -52,7 +80,8 @@ const AddPostForm = () => {
                 <button
                     type="button"
                     onClick={savePostClicked}
-                    className="cursor-pointer mt-5 text-3xl w-full bg-white rounded-lg text-blue-950 p-2 "
+                    disabled={!canSave}
+                    className={`cursor-pointer mt-5 text-3xl w-full bg-white rounded-lg text-blue-950 p-2 ${!canSave ? 'opacity-30 bg-gray-300' : 'opacity-100'}`}
                 >
                     Save Post
                 </button>

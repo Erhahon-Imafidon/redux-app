@@ -5,6 +5,7 @@ export interface PostSliceState {
     id: string;
     title: string;
     content: string;
+    userId: string;
 }
 
 const initialState: PostSliceState[] = [
@@ -12,12 +13,14 @@ const initialState: PostSliceState[] = [
         id: '1',
         title: 'Learning Redux Toolkit',
         content: 'Redux Toolkit is the recommended way to write Redux logic.',
+        userId: '0',
     },
 
     {
         id: '2',
         title: 'Slices...',
         content: 'The more I slice, the more I learn about Redux.',
+        userId: '1',
     },
 ];
 
@@ -29,12 +32,13 @@ const postsSlice = createSlice({
             reducer(state, action: PayloadAction<PostSliceState>) {
                 state.push(action.payload);
             },
-            prepare(title: string, content: string) {
+            prepare(title: string, content: string, userId: string) {
                 return {
                     payload: {
                         id: nanoid(),
                         title,
                         content,
+                        userId,
                     },
                 };
             },
