@@ -1,5 +1,5 @@
-import { useAppSelector } from '../app/hooks.ts';
-import { selectAllPosts } from '../features/posts/postSlice.ts';
+import { useAppSelector } from '../../app/hooks.ts';
+import { selectAllPosts } from '../../features/posts/postSlice.ts';
 
 const PostsList = () => {
     const posts = useAppSelector(selectAllPosts);
