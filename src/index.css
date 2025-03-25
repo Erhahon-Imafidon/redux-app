@@ -1,5 +1,5 @@
 @import 'tailwindcss';
 
 body {
-    @apply min-h-screen;
+    @apply min-h-screen font-sans;
 }
