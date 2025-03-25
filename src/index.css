@@ -1,9 +1,5 @@
 @import 'tailwindcss';
 
 body {
-    @apply min-h-screen text-[5rem] grid place-content-center;
-}
-
-input {
-    @apply text-center max-w-10;
+    @apply min-h-screen;
 }

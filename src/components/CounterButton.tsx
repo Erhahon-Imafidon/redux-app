@@ -8,7 +8,8 @@ interface CounterBtnProps {
 const CounterButton = (props: CounterBtnProps) => {
     return (
         <button
-            onClick={props.onClick} className="text-[2rem] md:text-6xl my-2 ml-2 min-w-8 p-2"
+            onClick={props.onClick}
+            className="text-[2rem] md:text-6xl my-2 ml-2 min-w-8 p-2 cursor-pointer"
         >
             {props.children}
         </button>
