@@ -1,18 +1,24 @@
 import { useAppSelector } from '../../app/hooks.ts';
 import { selectAllPosts } from '../../features/posts/postSlice.ts';
 import PostAuthor from './PostAuthor.tsx';
+import TimeAgo from './TimeAgo.tsx';
 
 const PostsList = () => {
     const posts = useAppSelector(selectAllPosts);
 
-    const renderedPosts = posts.map((post) => (
+    const orderedPosts = posts
+        .slice()
+        .sort((a, b) => b.date.localeCompare(a.date));
+
+    const renderedPosts = orderedPosts.map((post) => (
         <article key={post.id} className="border border-white rounded-lg p-4">
             <h2 className="text-3xl">{post.title}</h2>
             <p className="text-[1.2rem] my-2">
                 {post.content.substring(0, 100)}
             </p>
             <p className="text-base">
-                <PostAuthor userId={post.userId} />
+                <PostAuthor userId={post.userId || ''} />
+                <TimeAgo timestamp={post.date || ''} />
             </p>
         </article>
     ));
