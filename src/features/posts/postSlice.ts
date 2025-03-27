@@ -17,7 +17,7 @@ export interface PostSliceState {
     };
 }
 
-interface ReactionPayload {
+export interface ReactionPayload {
     postId: string;
     reaction: keyof PostSliceState['reactions'];
 }
@@ -92,6 +92,6 @@ const postsSlice = createSlice({
 
 export const selectAllPosts = (state: RootState) => state.posts;
 
-export const { postsAdded } = postsSlice.actions;
+export const { postsAdded, reactionAdded } = postsSlice.actions;
 
 export default postsSlice.reducer;
