@@ -25,7 +25,7 @@ export interface PostSliceState {
 export interface PostStateProps {
     posts: PostSliceState[];
     status: 'idle' | 'loading' | 'succeeded' | 'failed';
-    error: boolean | null;
+    error: string | null;
 }
 
 export interface ReactionPayload {
@@ -44,7 +44,7 @@ const POSTS_URL = 'https://jsonplaceholder.typicode.com/posts';
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
     try {
         const response = await axios.get(POSTS_URL);
-        return [...response.data];
+        return response.data;
     } catch (err) {
         return err instanceof Error ? err.message : 'Unknown error';
     }
