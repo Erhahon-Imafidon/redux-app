@@ -6,6 +6,7 @@ import {
 } from '@reduxjs/toolkit';
 import axios from 'axios';
 import type { RootState } from '../../app/store.ts';
+import { sub } from 'date-fns';
 
 export interface PostSliceState {
     id: string;
@@ -84,6 +85,40 @@ const postsSlice = createSlice({
                 existingPost.reactions[reaction]++;
             }
         },
+    },
+
+    extraReducers(builder) {
+        builder
+            .addCase(fetchPosts.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(
+                fetchPosts.fulfilled,
+                (state, action: PayloadAction<PostSliceState[]>) => {
+                    state.status = 'succeeded';
+                    // adding date and reactions
+                    let min = 1;
+                    const loadedPosts = action.payload.map((post) => {
+                        post.date = sub(new Date(), {
+                            minutes: min++,
+                        }).toISOString();
+                        post.reactions = {
+                            thumbsUp: 0,
+                            wow: 0,
+                            heart: 0,
+                            rocket: 0,
+                            coffee: 0,
+                        };
+                        return post;
+                    });
+                    // adding any fetched posts to the array
+                    state.posts = state.posts.concat(loadedPosts);
+                }
+            )
+            .addCase(fetchPosts.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message || null;
+            });
     },
 });
 
