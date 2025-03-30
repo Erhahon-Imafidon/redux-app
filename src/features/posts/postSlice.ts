@@ -4,9 +4,8 @@ import {
     PayloadAction,
     createAsyncThunk,
 } from '@reduxjs/toolkit';
+import axios from 'axios';
 import type { RootState } from '../../app/store.ts';
-
-const POSTS_URL = 'https://jsonplaceholder.typicode.com/posts';
 
 export interface PostSliceState {
     id: string;
@@ -39,6 +38,17 @@ const initialState: PostStateProps = {
     status: 'idle',
     error: null,
 };
+
+const POSTS_URL = 'https://jsonplaceholder.typicode.com/posts';
+
+export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
+    try {
+        const response = await axios.get(POSTS_URL);
+        return [...response.data];
+    } catch (err) {
+        return err instanceof Error ? err.message : 'Unknown error';
+    }
+});
 
 const postsSlice = createSlice({
     name: 'posts',
