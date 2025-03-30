@@ -2,6 +2,7 @@ import { useAppSelector } from '../../app/hooks.ts';
 import { selectAllPosts } from '../../features/posts/postSlice.ts';
 import PostAuthor from './PostAuthor.tsx';
 import TimeAgo from './TimeAgo.tsx';
+import ReactionButtons from './ReactionButtons.tsx';
 
 const PostsList = () => {
     const posts = useAppSelector(selectAllPosts);
@@ -20,6 +21,7 @@ const PostsList = () => {
                 <PostAuthor userId={post.userId || ''} />
                 <TimeAgo timestamp={post.date || ''} />
             </p>
+            <ReactionButtons post={post} />
         </article>
     ));
 

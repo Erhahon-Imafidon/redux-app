@@ -33,7 +33,7 @@ const ReactionButtons = ({ post }: ReactionButtonsProps) => {
                             })
                         )
                     }
-                    className="mr-1 text-base text-white"
+                    className="text-base text-white"
                 >
                     {emoji}
                     {post.reactions?.[
