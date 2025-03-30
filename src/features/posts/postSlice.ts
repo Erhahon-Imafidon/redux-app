@@ -1,6 +1,12 @@
-import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit';
+import {
+    createSlice,
+    nanoid,
+    PayloadAction,
+    createAsyncThunk,
+} from '@reduxjs/toolkit';
 import type { RootState } from '../../app/store.ts';
-import { sub } from 'date-fns';
+
+const POSTS_URL = 'https://jsonplaceholder.typicode.com/posts';
 
 export interface PostSliceState {
     id: string;
@@ -17,41 +23,22 @@ export interface PostSliceState {
     };
 }
 
+export interface PostStateProps {
+    posts: PostSliceState[];
+    status: 'idle' | 'loading' | 'succeeded' | 'failed';
+    error: boolean | null;
+}
+
 export interface ReactionPayload {
     postId: string;
     reaction: keyof PostSliceState['reactions'];
 }
 
-const initialState: PostSliceState[] = [
-    {
-        id: '1',
-        title: 'Learning Redux Toolkit',
-        content: 'Redux Toolkit is the recommended way to write Redux logic.',
-        date: sub(new Date(), { minutes: 10 }).toISOString(),
-        reactions: {
-            thumbsUp: 0,
-            wow: 0,
-            heart: 0,
-            rocket: 0,
-            coffee: 0,
-        },
-    },
-
-    {
-        id: '2',
-        title: 'Slices...',
-        content: 'The more I slice, the more I learn about Redux.',
-        userId: '1',
-        date: sub(new Date(), { minutes: 10 }).toISOString(),
-        reactions: {
-            thumbsUp: 0,
-            wow: 0,
-            heart: 0,
-            rocket: 0,
-            coffee: 0,
-        },
-    },
-];
+const initialState: PostStateProps = {
+    posts: [],
+    status: 'idle',
+    error: null,
+};
 
 const postsSlice = createSlice({
     name: 'posts',
@@ -59,7 +46,7 @@ const postsSlice = createSlice({
     reducers: {
         postsAdded: {
             reducer(state, action: PayloadAction<PostSliceState>) {
-                state.push(action.payload);
+                state.posts.push(action.payload);
             },
             prepare(title: string, content: string, userId: string) {
                 return {
@@ -82,7 +69,7 @@ const postsSlice = createSlice({
         },
         reactionAdded(state, actions: PayloadAction<ReactionPayload>) {
             const { postId, reaction } = actions.payload;
-            const existingPost = state.find((post) => post.id === postId);
+            const existingPost = state.posts.find((post) => post.id === postId);
             if (existingPost && existingPost.reactions) {
                 existingPost.reactions[reaction]++;
             }
@@ -90,7 +77,7 @@ const postsSlice = createSlice({
     },
 });
 
-export const selectAllPosts = (state: RootState) => state.posts;
+export const selectAllPosts = (state: RootState) => state.posts.posts;
 
 export const { postsAdded, reactionAdded } = postsSlice.actions;
 
