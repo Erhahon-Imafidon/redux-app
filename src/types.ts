@@ -31,3 +31,9 @@ export interface APIPost {
     body: string;
     userId: string;
 }
+
+export interface AddNewPostProp {
+    title: string;
+    content: string;
+    userId: string;
+}
