@@ -13,6 +13,7 @@ import {
     PostStateProps,
     ReactionPayload,
     APIPost,
+    AddNewPostProp,
 } from '../../types.ts';
 
 const initialState: PostStateProps = {
@@ -31,6 +32,22 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
         return err instanceof Error ? err.message : 'Unknown error';
     }
 });
+
+export const addNewPost = createAsyncThunk(
+    'posts/addNewPost',
+    async (initialPost: AddNewPostProp) => {
+        try {
+            const response = await axios.post(POSTS_URL, {
+                title: initialPost.title,
+                body: initialPost.content,
+                userId: initialPost.userId,
+            });
+            return response.data;
+        } catch (err) {
+            return err instanceof Error ? err.message : 'Unknown error';
+        }
+    }
+);
 
 const postsSlice = createSlice({
     name: 'posts',
@@ -108,7 +125,34 @@ const postsSlice = createSlice({
             .addCase(fetchPosts.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.error.message || null;
-            });
+            })
+            .addCase(
+                addNewPost.fulfilled,
+                (
+                    state,
+                    action: PayloadAction<APIPost> & {
+                        meta: { arg: AddNewPostProp };
+                    }
+                ) => {
+                    const uniqueId = nanoid();
+                    const newPost = {
+                        id: uniqueId,
+                        title: action.payload.title,
+                        content: action.payload.body, // Convert body to content
+                        userId: action.meta.arg.userId,
+                        date: new Date().toISOString(),
+                        reactions: {
+                            thumbsUp: 0,
+                            wow: 0,
+                            heart: 0,
+                            rocket: 0,
+                            coffee: 0,
+                        },
+                    };
+                    console.log('Post added:', newPost);
+                    state.posts.push(newPost);
+                }
+            );
     },
 });
 
