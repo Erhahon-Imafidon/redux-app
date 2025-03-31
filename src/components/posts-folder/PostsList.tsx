@@ -1,34 +1,43 @@
-import { useAppSelector } from '../../app/hooks.ts';
-import { selectAllPosts } from '../../features/posts/postSlice.ts';
-import PostAuthor from './PostAuthor.tsx';
-import TimeAgo from './TimeAgo.tsx';
-import ReactionButtons from './ReactionButtons.tsx';
+import { useEffect } from 'react';
+import { useAppSelector, useAppDispatch } from '../../app/hooks.ts';
+import {
+    getPostsError,
+    getPostsStatus,
+    selectAllPosts,
+    fetchPosts,
+} from '../../features/posts/postSlice.ts';
+import PostsExcerpt from './PostsExcerpt.tsx';
 
 const PostsList = () => {
+    const dispatch = useAppDispatch();
     const posts = useAppSelector(selectAllPosts);
+    const postsStatus = useAppSelector(getPostsStatus);
+    const error = useAppSelector(getPostsError);
 
-    const orderedPosts = posts
-        .slice()
-        .sort((a, b) => b.date.localeCompare(a.date));
+    useEffect(() => {
+        if (postsStatus === 'idle') {
+            dispatch(fetchPosts());
+        }
+    }, [postsStatus, dispatch]);
 
-    const renderedPosts = orderedPosts.map((post) => (
-        <article key={post.id} className="border border-white rounded-lg p-4">
-            <h2 className="text-3xl">{post.title}</h2>
-            <p className="text-[1.2rem] my-2">
-                {post.content.substring(0, 100)}
-            </p>
-            <p className="text-base">
-                <PostAuthor userId={post.userId || ''} />
-                <TimeAgo timestamp={post.date || ''} />
-            </p>
-            <ReactionButtons post={post} />
-        </article>
-    ));
+    let content;
+    if (postsStatus === 'loading') {
+        content = <p>Loading...</p>;
+    } else if (postsStatus === 'succeeded') {
+        const orderedPosts = posts
+            .slice()
+            .sort((a, b) => b.date.localeCompare(a.date));
+        content = orderedPosts.map((post) => (
+            <PostsExcerpt key={post.id} post={post} />
+        ));
+    } else if (postsStatus === 'failed') {
+        content = <p>{error}</p>;
+    }
 
     return (
         <section className="mt-10 w-full max-w-125 mx-auto space-y-5">
             <h1 className="text-5xl font-bold mb-5">Posts</h1>
-            {renderedPosts}
+            {content}
         </section>
     );
 };
