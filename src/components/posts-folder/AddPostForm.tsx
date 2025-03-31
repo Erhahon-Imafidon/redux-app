@@ -21,7 +21,6 @@ const AddPostForm = () => {
 
     const onAuthorChanged = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setUserId(e.target.value);
-        console.log(e.target.value);
     };
 
     const canSave =
