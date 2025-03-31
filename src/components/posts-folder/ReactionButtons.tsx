@@ -4,7 +4,7 @@ import {
     PostSliceState,
 } from '../../features/posts/postSlice.ts';
 
-interface ReactionButtonsProps {
+export interface ReactionButtonsProps {
     post: PostSliceState;
 }
 

@@ -123,6 +123,8 @@ const postsSlice = createSlice({
 });
 
 export const selectAllPosts = (state: RootState) => state.posts.posts;
+export const getPostsStatus = (state: RootState) => state.posts.status;
+export const getPostsError = (state: RootState) => state.posts.error;
 
 export const { postsAdded, reactionAdded } = postsSlice.actions;
 
