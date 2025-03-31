@@ -31,7 +31,7 @@ const PostsList = () => {
             <PostsExcerpt key={post.id} post={post} />
         ));
     } else if (postsStatus === 'failed') {
-        content = <p>{error}</p>;
+        content = <p>{error || 'Error fetching post'}</p>;
     }
 
     return (
