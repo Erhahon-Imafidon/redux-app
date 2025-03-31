@@ -1,8 +1,6 @@
 import { useAppDispatch } from '../../app/hooks.ts';
-import {
-    reactionAdded,
-    PostSliceState,
-} from '../../features/posts/postSlice.ts';
+import { reactionAdded } from '../../features/posts/postSlice.ts';
+import { PostSliceState } from '../../types.ts';
 
 export interface ReactionButtonsProps {
     post: PostSliceState;

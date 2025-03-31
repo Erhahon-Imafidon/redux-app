@@ -8,31 +8,12 @@ import axios from 'axios';
 import type { RootState } from '../../app/store.ts';
 import { sub } from 'date-fns';
 
-export interface PostSliceState {
-    id: string;
-    title: string;
-    content: string;
-    userId?: string;
-    date: string;
-    reactions?: {
-        thumbsUp: number;
-        wow: number;
-        heart: number;
-        rocket: number;
-        coffee: number;
-    };
-}
-
-export interface PostStateProps {
-    posts: PostSliceState[];
-    status: 'idle' | 'loading' | 'succeeded' | 'failed';
-    error: string | null;
-}
-
-export interface ReactionPayload {
-    postId: string;
-    reaction: keyof PostSliceState['reactions'];
-}
+import {
+    PostSliceState,
+    PostStateProps,
+    ReactionPayload,
+    APIPost,
+} from '../../types.ts';
 
 const initialState: PostStateProps = {
     posts: [],
@@ -94,25 +75,34 @@ const postsSlice = createSlice({
             })
             .addCase(
                 fetchPosts.fulfilled,
-                (state, action: PayloadAction<PostSliceState[]>) => {
+                (state, action: PayloadAction<APIPost[]>) => {
                     state.status = 'succeeded';
                     // adding date and reactions
                     let min = 1;
                     const loadedPosts = action.payload.map((post) => {
-                        post.date = sub(new Date(), {
-                            minutes: min++,
-                        }).toISOString();
-                        post.reactions = {
-                            thumbsUp: 0,
-                            wow: 0,
-                            heart: 0,
-                            rocket: 0,
-                            coffee: 0,
+                        return {
+                            ...post,
+                            content: post.body, // Map the body field to content
+                            date: sub(new Date(), {
+                                minutes: min++,
+                            }).toISOString(),
+                            reactions: {
+                                thumbsUp: 0,
+                                wow: 0,
+                                heart: 0,
+                                rocket: 0,
+                                coffee: 0,
+                            },
                         };
-                        return post;
                     });
                     // adding any fetched posts to the array
-                    state.posts = state.posts.concat(loadedPosts);
+                    const existingIds = new Set(
+                        state.posts.map((post) => post.id)
+                    );
+                    const uniqueLoadedPosts = loadedPosts.filter(
+                        (post) => !existingIds.has(post.id)
+                    );
+                    state.posts = state.posts.concat(uniqueLoadedPosts);
                 }
             )
             .addCase(fetchPosts.rejected, (state, action) => {
