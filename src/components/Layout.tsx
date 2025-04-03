@@ -1,10 +1,14 @@
 import { Outlet } from 'react-router';
+import Header from './Header.tsx';
 
 const Layout = () => {
     return (
-        <main className="container h-full w-full max-w-125 mx-auto">
-            <Outlet />
-        </main>
+        <>
+            <Header />
+            <main className="container h-full w-full max-w-125 mx-auto">
+                <Outlet />
+            </main>
+        </>
     );
 };
 
