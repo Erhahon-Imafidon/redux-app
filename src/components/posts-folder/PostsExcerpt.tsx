@@ -5,7 +5,7 @@ import { ReactionButtonsProps } from './ReactionButtons.tsx';
 
 const PostsExcerpt = ({ post }: ReactionButtonsProps) => {
     return (
-        <article className="border border-white rounded-lg p-4">
+        <article className="border border-white rounded-lg p-4 italic">
             <h2 className="text-3xl">{post.title}</h2>
             <p className="text-[1.2rem] my-2">
                 {post.content.substring(0, 100)}

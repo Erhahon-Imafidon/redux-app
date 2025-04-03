@@ -1,11 +1,22 @@
-import { PostsList, AddPostForm } from './components/index.ts';
+import { Routes, Route } from 'react-router';
+import {
+    PostsList,
+    AddPostForm,
+    Layout,
+    SinglePostPage,
+} from './components/index.ts';
 
 const App = () => {
     return (
-        <main className="container h-full">
-            <AddPostForm />
-            <PostsList />
-        </main>
+        <Routes>
+            <Route path="/" element={<Layout />}>
+                <Route index element={<PostsList />} />
+                <Route path="posts">
+                    <Route index element={<AddPostForm />} />
+                    <Route path=":postId" element={<SinglePostPage />} />
+                </Route>
+            </Route>
+        </Routes>
     );
 };
 
