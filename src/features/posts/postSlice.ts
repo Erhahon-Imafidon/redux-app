@@ -99,6 +99,7 @@ const postsSlice = createSlice({
                     const loadedPosts = action.payload.map((post) => {
                         return {
                             ...post,
+                            id: post.id.toString(),
                             content: post.body, // Map the body field to content
                             date: sub(new Date(), {
                                 minutes: min++,
@@ -112,10 +113,11 @@ const postsSlice = createSlice({
                             },
                         };
                     });
-                    // adding any fetched posts to the array
+                    // Prevent duplicate posts by checking existing ids
                     const existingIds = new Set(
                         state.posts.map((post) => post.id)
                     );
+                    // adding any fetched posts to the array
                     const uniqueLoadedPosts = loadedPosts.filter(
                         (post) => !existingIds.has(post.id)
                     );
@@ -160,7 +162,7 @@ export const selectAllPosts = (state: RootState) => state.posts.posts;
 export const getPostsStatus = (state: RootState) => state.posts.status;
 export const getPostsError = (state: RootState) => state.posts.error;
 
-// A sellector for a single post by ID
+// A selector for a single post by ID
 export const selectPostById = (state: RootState, postId: string) => {
     return state.posts.posts.find((post) => post.id === postId);
 };

@@ -11,7 +11,7 @@ const App = () => {
         <Routes>
             <Route path="/" element={<Layout />}>
                 <Route index element={<PostsList />} />
-                <Route path="posts">
+                <Route path="post">
                     <Route index element={<AddPostForm />} />
                     <Route path=":postId" element={<SinglePostPage />} />
                 </Route>
