@@ -4,6 +4,7 @@ import {
     AddPostForm,
     Layout,
     SinglePostPage,
+    EditPostForm,
 } from './components/index.ts';
 
 const App = () => {
@@ -14,6 +15,7 @@ const App = () => {
                 <Route path="post">
                     <Route index element={<AddPostForm />} />
                     <Route path=":postId" element={<SinglePostPage />} />
+                    <Route path="edit/:postId" element={<EditPostForm />} />
                 </Route>
             </Route>
         </Routes>

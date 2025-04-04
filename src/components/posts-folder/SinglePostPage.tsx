@@ -1,4 +1,4 @@
-import { useParams } from 'react-router';
+import { useParams, Link } from 'react-router';
 import { useAppSelector } from '../../app/hooks.ts';
 import { selectPostById } from '../../features/posts/postSlice.ts';
 import PostAuthor from './PostAuthor.tsx';
@@ -25,6 +25,12 @@ const SinglePostPage = () => {
             <h2 className="text-3xl">{post.title}</h2>
             <p className="text-[1.2rem] my-2 italic">{post.content}</p>
             <p className="text-base">
+                <Link
+                    to={`/post/edit/${post.id}`}
+                    className="mr-1 underline hover:opacity-75 focus:opacity-75"
+                >
+                    Edit Post
+                </Link>
                 <PostAuthor userId={post.userId || ''} />
                 <TimeAgo timestamp={post.date || ''} />
             </p>
