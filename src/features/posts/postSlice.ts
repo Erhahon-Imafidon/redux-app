@@ -32,7 +32,7 @@ export const fetchPosts = createAsyncThunk(
             return response.data;
         } catch (err) {
             return rejectWithValue(
-                err instanceof Error ? err.message : 'Network error occured'
+                err instanceof Error ? err.message : 'Network error occurred'
             );
         }
     }
