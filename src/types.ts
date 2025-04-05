@@ -4,7 +4,7 @@ export interface PostSliceState {
     title: string;
     content: string;
     userId?: string;
-    date: string;
+    date?: string;
     reactions?: {
         thumbsUp: number;
         wow: number;

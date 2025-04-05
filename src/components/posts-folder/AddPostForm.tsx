@@ -21,7 +21,6 @@ const AddPostForm = () => {
 
     const onAuthorChanged = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setUserId(e.target.value);
-        console.log(e.target.value);
     };
 
     const canSave =
@@ -45,6 +44,7 @@ const AddPostForm = () => {
         }
     };
 
+    // To select the author
     const userOptions = users.map((user) => (
         <option key={user.id} value={user.id}>
             {user.name}
@@ -94,7 +94,7 @@ const AddPostForm = () => {
                     type="button"
                     onClick={savePostClicked}
                     disabled={!canSave}
-                    className={`cursor-pointer mt-5 text-3xl w-full bg-white rounded-lg text-blue-950 p-2 ${!canSave ? 'opacity-30 bg-gray-300' : 'opacity-100'}`}
+                    className={`cursor-pointer mt-5 text-3xl w-full bg-gray-600 rounded-lg text-blue-300 p-2 ${!canSave ? 'opacity-30 bg-gray-300' : 'opacity-100'}`}
                 >
                     Save Post
                 </button>

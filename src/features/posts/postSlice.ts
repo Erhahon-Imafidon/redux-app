@@ -49,6 +49,23 @@ export const addNewPost = createAsyncThunk(
     }
 );
 
+export const updatePost = createAsyncThunk(
+    'posts/updatePost',
+    async (initialPost: PostSliceState) => {
+        const { id, title, content, userId } = initialPost;
+        try {
+            const response = await axios.put(`${POSTS_URL}/${id}`, {
+                title,
+                body: content,
+                userId,
+            });
+            return response.data;
+        } catch (err) {
+            return err instanceof Error ? err.message : 'Unknown error';
+        }
+    }
+);
+
 const postsSlice = createSlice({
     name: 'posts',
     initialState,
@@ -151,8 +168,35 @@ const postsSlice = createSlice({
                             coffee: 0,
                         },
                     };
-                    console.log('Post added:', newPost);
                     state.posts.push(newPost);
+                }
+            )
+            .addCase(
+                updatePost.fulfilled,
+                (state, action: PayloadAction<PostSliceState>) => {
+                    const apiPost = action.payload;
+                    const postId = apiPost.id.toString();
+                    const existingPost = state.posts.find(
+                        (post) => post.id === postId
+                    );
+                    if (!existingPost) {
+                        console.log('Post not found in state');
+                        return;
+                    }
+                    // Map API fields to Redux post structure
+                    const updatedPost: PostSliceState = {
+                        ...existingPost,
+                        id: postId,
+                        title: apiPost.title,
+                        content: apiPost.body,
+                        userId: apiPost.userId,
+                        date: new Date().toISOString(),
+                    };
+                    // Update the posts array
+                    const posts = state.posts.filter(
+                        (post) => post.id !== postId
+                    );
+                    state.posts = [...posts, updatedPost];
                 }
             );
     },
