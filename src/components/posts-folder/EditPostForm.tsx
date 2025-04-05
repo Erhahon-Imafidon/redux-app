@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
-import { selectPostById, updatePost } from '../../features/posts/postSlice.ts';
+import {
+    selectPostById,
+    updatePost,
+    deletePost,
+} from '../../features/posts/postSlice.ts';
 import { selectAllUsers } from '../../features/users/userSlice.ts';
 
 const EditPostForm = () => {
@@ -68,6 +72,30 @@ const EditPostForm = () => {
         }
     };
 
+    const onDeletePostClicked = () => {
+        try {
+            setRequestStatus('idle');
+            dispatch(
+                deletePost({
+                    id: post.id,
+                    title,
+                    content,
+                    userId,
+                    reactions: post.reactions,
+                })
+            ).unwrap();
+
+            setTitle('');
+            setContent('');
+            setUserId('');
+            navigate('/');
+        } catch (err) {
+            console.error('Failed to save edited post', err);
+        } finally {
+            setRequestStatus('idle');
+        }
+    };
+
     const userOptions = users.map((user) => (
         <option key={user.id} value={user.id}>
             {user.name}
@@ -75,7 +103,7 @@ const EditPostForm = () => {
     ));
 
     return (
-        <section className="w-full max-w-125 mx-auto mt-20">
+        <section className="w-full max-w-125 mx-auto mt-20 mb-10">
             <h2 className="text-4xl font-bold">Edit Post</h2>
             <form className="flex flex-col gap-y-5 mt-10">
                 <label htmlFor="postTitle" className="text-2xl">
@@ -121,6 +149,13 @@ const EditPostForm = () => {
                     className={`cursor-pointer mt-5 text-3xl w-full bg-gray-400 rounded-lg text-blue-950 p-2 ${!canSave ? 'opacity-30 bg-gray-300' : 'opacity-100'}`}
                 >
                     Save Post
+                </button>
+                <button
+                    type="button"
+                    onClick={onDeletePostClicked}
+                    className="cursor-pointer mt-3 text-3xl w-full bg-red-500 rounded-lg text-white p-2"
+                >
+                    Delete Post
                 </button>
             </form>
         </section>

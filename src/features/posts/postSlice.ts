@@ -66,6 +66,20 @@ export const updatePost = createAsyncThunk(
     }
 );
 
+export const deletePost = createAsyncThunk(
+    'posts/deletePost',
+    async (initialPost: PostSliceState) => {
+        const { id } = initialPost;
+        try {
+            const response = await axios.delete(`${POSTS_URL}/${id}`);
+            if (response.status === 200) return initialPost;
+            return `${response.status}: ${response.statusText}`;
+        } catch (err) {
+            return err instanceof Error ? err.message : 'Unknown error';
+        }
+    }
+);
+
 const postsSlice = createSlice({
     name: 'posts',
     initialState,
@@ -198,7 +212,27 @@ const postsSlice = createSlice({
                     );
                     state.posts = [...posts, updatedPost];
                 }
-            );
+            )
+            .addCase(deletePost.fulfilled, (state, action) => {
+                const apiPost = action.payload;
+                if (typeof apiPost === 'string') {
+                    state.error = apiPost;
+                    console.warn('Delete post failed:', apiPost);
+                    return;
+                }
+
+                // Now TypeScript knows payload is a PostSliceState
+                const postId = apiPost.id.toString();
+
+                if (!postId) {
+                    console.error('Could not complete delete post');
+                    console.log(apiPost);
+                    return;
+                }
+
+                // Update the posts array
+                state.posts = state.posts.filter((post) => post.id !== postId);
+            });
     },
 });
 
