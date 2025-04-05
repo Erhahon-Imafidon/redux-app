@@ -185,6 +185,10 @@ const postsSlice = createSlice({
                     state.posts.push(newPost);
                 }
             )
+            .addCase(addNewPost.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message || 'Unknown error';
+            })
             .addCase(
                 updatePost.fulfilled,
                 (state, action: PayloadAction<APIPost>) => {

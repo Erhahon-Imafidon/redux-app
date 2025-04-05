@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
 import { addNewPost } from '../../features/posts/postSlice.ts';
 import { selectAllUsers } from '../../features/users/userSlice.ts';
@@ -10,6 +11,7 @@ const AddPostForm = () => {
     const [addPostRequestStatus, setAddPostRequestStatus] = useState('idle');
     const dispatch = useAppDispatch();
     const users = useAppSelector(selectAllUsers);
+    const navigate = useNavigate();
 
     const onTitleChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value);
@@ -27,15 +29,16 @@ const AddPostForm = () => {
         [title, content, userId].every(Boolean) &&
         addPostRequestStatus === 'idle';
 
-    const savePostClicked = () => {
+    const savePostClicked = async () => {
         if (canSave) {
             try {
                 setAddPostRequestStatus('pending');
-                dispatch(addNewPost({ title, content, userId })).unwrap();
+                await dispatch(addNewPost({ title, content, userId })).unwrap();
 
                 setTitle('');
                 setContent('');
                 setUserId('');
+                navigate('/');
             } catch (err) {
                 console.error('Failed to save the post: ', err);
             } finally {
