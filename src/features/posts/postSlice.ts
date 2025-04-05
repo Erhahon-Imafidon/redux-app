@@ -180,7 +180,7 @@ const postsSlice = createSlice({
                         (post) => post.id === postId
                     );
                     if (!existingPost) {
-                        console.log('Post not found in state');
+                        console.error('Post not found in state');
                         return;
                     }
                     // Map API fields to Redux post structure
