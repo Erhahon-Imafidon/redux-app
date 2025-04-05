@@ -75,8 +75,8 @@ const EditPostForm = () => {
     ));
 
     return (
-        <section className="w-full max-w-125 mx-auto mx- mt-20">
-            <h2 className="text-4xl font-bold">Add a New Post</h2>
+        <section className="w-full max-w-125 mx-auto mt-20">
+            <h2 className="text-4xl font-bold">Edit Post</h2>
             <form className="flex flex-col gap-y-5 mt-10">
                 <label htmlFor="postTitle" className="text-2xl">
                     Post Title:
