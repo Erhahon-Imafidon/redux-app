@@ -31,7 +31,7 @@ const ReactionButtons = ({ post }: ReactionButtonsProps) => {
                             })
                         )
                     }
-                    className="text-base text-white"
+                    className="text-base text-blue-950 cursor-pointer"
                 >
                     {emoji}
                     {post.reactions?.[
