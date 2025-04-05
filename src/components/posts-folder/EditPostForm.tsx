@@ -72,10 +72,10 @@ const EditPostForm = () => {
         }
     };
 
-    const onDeletePostClicked = () => {
+    const onDeletePostClicked = async () => {
         try {
-            setRequestStatus('idle');
-            dispatch(
+            setRequestStatus('pending');
+            await dispatch(
                 deletePost({
                     id: post.id,
                     title,

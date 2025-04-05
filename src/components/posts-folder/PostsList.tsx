@@ -26,7 +26,7 @@ const PostsList = () => {
     } else if (postsStatus === 'succeeded') {
         const orderedPosts = posts
             .slice()
-            .sort((a, b) => b.date.localeCompare(a.date));
+            .sort((a, b) => (b.date ?? '').localeCompare(a.date ?? ''));
         content = orderedPosts.map((post) => (
             <PostsExcerpt key={post.id} post={post} />
         ));

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
 import { addNewPost } from '../../features/posts/postSlice.ts';
 import { selectAllUsers } from '../../features/users/userSlice.ts';
@@ -7,9 +8,11 @@ const AddPostForm = () => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [userId, setUserId] = useState('');
+    const [error, setError] = useState<string | null>(null);
     const [addPostRequestStatus, setAddPostRequestStatus] = useState('idle');
     const dispatch = useAppDispatch();
     const users = useAppSelector(selectAllUsers);
+    const navigate = useNavigate();
 
     const onTitleChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value);
@@ -27,16 +30,23 @@ const AddPostForm = () => {
         [title, content, userId].every(Boolean) &&
         addPostRequestStatus === 'idle';
 
-    const savePostClicked = () => {
+    const savePostClicked = async () => {
         if (canSave) {
             try {
                 setAddPostRequestStatus('pending');
-                dispatch(addNewPost({ title, content, userId })).unwrap();
+                setError(null);
+                await dispatch(addNewPost({ title, content, userId })).unwrap();
 
                 setTitle('');
                 setContent('');
                 setUserId('');
+                navigate('/');
             } catch (err) {
+                setError(
+                    typeof err === 'string'
+                        ? err
+                        : 'Failed to save post. Check your network connection.'
+                );
                 console.error('Failed to save the post: ', err);
             } finally {
                 setAddPostRequestStatus('idle');
@@ -54,6 +64,13 @@ const AddPostForm = () => {
     return (
         <section className="w-full max-w-125 mx-auto mt-20">
             <h2 className="text-4xl font-bold">Add a New Post</h2>
+
+            {error && (
+                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mt-4 mb-4">
+                    <p>{error}</p>
+                </div>
+            )}
+
             <form className="flex flex-col gap-y-5 mt-10">
                 <label htmlFor="postTitle" className="text-2xl">
                     Post Title:

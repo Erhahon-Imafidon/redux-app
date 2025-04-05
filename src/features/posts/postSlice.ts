@@ -24,18 +24,23 @@ const initialState: PostStateProps = {
 
 const POSTS_URL = 'https://jsonplaceholder.typicode.com/posts';
 
-export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
-    try {
-        const response = await axios.get(POSTS_URL);
-        return response.data;
-    } catch (err) {
-        return err instanceof Error ? err.message : 'Unknown error';
+export const fetchPosts = createAsyncThunk(
+    'posts/fetchPosts',
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await axios.get(POSTS_URL);
+            return response.data;
+        } catch (err) {
+            return rejectWithValue(
+                err instanceof Error ? err.message : 'Network error occurred'
+            );
+        }
     }
-});
+);
 
 export const addNewPost = createAsyncThunk(
     'posts/addNewPost',
-    async (initialPost: AddNewPostProp) => {
+    async (initialPost: AddNewPostProp, { rejectWithValue }) => {
         try {
             const response = await axios.post(POSTS_URL, {
                 title: initialPost.title,
@@ -44,14 +49,18 @@ export const addNewPost = createAsyncThunk(
             });
             return response.data;
         } catch (err) {
-            return err instanceof Error ? err.message : 'Unknown error';
+            return rejectWithValue(
+                err instanceof Error
+                    ? err.message
+                    : 'failed to create post. Check your network connection.'
+            );
         }
     }
 );
 
 export const updatePost = createAsyncThunk(
     'posts/updatePost',
-    async (initialPost: PostSliceState) => {
+    async (initialPost: PostSliceState, { rejectWithValue }) => {
         const { id, title, content, userId } = initialPost;
         try {
             const response = await axios.put(`${POSTS_URL}/${id}`, {
@@ -61,21 +70,25 @@ export const updatePost = createAsyncThunk(
             });
             return response.data;
         } catch (err) {
-            return err instanceof Error ? err.message : 'Unknown error';
+            return rejectWithValue(
+                err instanceof Error ? err.message : 'Unknown error'
+            );
         }
     }
 );
 
 export const deletePost = createAsyncThunk(
     'posts/deletePost',
-    async (initialPost: PostSliceState) => {
+    async (initialPost: PostSliceState, { rejectWithValue }) => {
         const { id } = initialPost;
         try {
             const response = await axios.delete(`${POSTS_URL}/${id}`);
             if (response.status === 200) return initialPost;
             return `${response.status}: ${response.statusText}`;
         } catch (err) {
-            return err instanceof Error ? err.message : 'Unknown error';
+            return rejectWithValue(
+                err instanceof Error ? err.message : 'Unknown error'
+            );
         }
     }
 );
@@ -185,6 +198,10 @@ const postsSlice = createSlice({
                     state.posts.push(newPost);
                 }
             )
+            .addCase(addNewPost.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message || 'Unknown error';
+            })
             .addCase(
                 updatePost.fulfilled,
                 (state, action: PayloadAction<APIPost>) => {
