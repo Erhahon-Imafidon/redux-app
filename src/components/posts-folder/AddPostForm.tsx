@@ -43,8 +43,8 @@ const AddPostForm = () => {
                 navigate('/');
             } catch (err) {
                 setError(
-                    err instanceof Error
-                        ? err.message
+                    typeof err === 'string'
+                        ? err
                         : 'Failed to save post. Check your network connection.'
                 );
                 console.error('Failed to save the post: ', err);
