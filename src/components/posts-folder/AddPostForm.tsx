@@ -8,6 +8,7 @@ const AddPostForm = () => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [userId, setUserId] = useState('');
+    const [error, setError] = useState<string | null>(null);
     const [addPostRequestStatus, setAddPostRequestStatus] = useState('idle');
     const dispatch = useAppDispatch();
     const users = useAppSelector(selectAllUsers);
@@ -33,6 +34,7 @@ const AddPostForm = () => {
         if (canSave) {
             try {
                 setAddPostRequestStatus('pending');
+                setError(null);
                 await dispatch(addNewPost({ title, content, userId })).unwrap();
 
                 setTitle('');
@@ -40,6 +42,11 @@ const AddPostForm = () => {
                 setUserId('');
                 navigate('/');
             } catch (err) {
+                setError(
+                    err instanceof Error
+                        ? err.message
+                        : 'Failed to save post. Check your network connection.'
+                );
                 console.error('Failed to save the post: ', err);
             } finally {
                 setAddPostRequestStatus('idle');
@@ -57,6 +64,13 @@ const AddPostForm = () => {
     return (
         <section className="w-full max-w-125 mx-auto mt-20">
             <h2 className="text-4xl font-bold">Add a New Post</h2>
+
+            {error && (
+                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mt-4 mb-4">
+                    <p>{error}</p>
+                </div>
+            )}
+
             <form className="flex flex-col gap-y-5 mt-10">
                 <label htmlFor="postTitle" className="text-2xl">
                     Post Title:
