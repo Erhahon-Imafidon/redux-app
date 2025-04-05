@@ -14,7 +14,7 @@ const PostsExcerpt = ({ post }: ReactionButtonsProps) => {
             <p className="text-base">
                 <Link
                     to={`post/${post.id}`}
-                    className="mr-1 underline hover:opacity-75 focus:opacity-75"
+                    className="mr-1 underline hover:opacity-75 focus:opacity-75 visited:text-green-300"
                 >
                     View Post
                 </Link>
