@@ -173,7 +173,7 @@ const postsSlice = createSlice({
             )
             .addCase(
                 updatePost.fulfilled,
-                (state, action: PayloadAction<PostSliceState>) => {
+                (state, action: PayloadAction<APIPost>) => {
                     const apiPost = action.payload;
                     const postId = apiPost.id.toString();
                     const existingPost = state.posts.find(
