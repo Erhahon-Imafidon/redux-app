@@ -60,7 +60,7 @@ export const addNewPost = createAsyncThunk(
 
 export const updatePost = createAsyncThunk(
     'posts/updatePost',
-    async (initialPost: PostSliceState, { rejectWithValue }) => {
+    async (initialPost: PostSliceState) => {
         const { id, title, content, userId } = initialPost;
         try {
             const response = await axios.put(`${POSTS_URL}/${id}`, {
@@ -69,10 +69,11 @@ export const updatePost = createAsyncThunk(
                 userId,
             });
             return response.data;
-        } catch (err) {
-            return rejectWithValue(
-                err instanceof Error ? err.message : 'Unknown error'
-            );
+        } catch {
+            // return rejectWithValue(
+            //     err instanceof Error ? err.message : 'Unknown error'
+            // );
+            return initialPost; // only for testing purposes in redux not the ideal way
         }
     }
 );
