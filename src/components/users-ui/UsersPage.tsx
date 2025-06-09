@@ -1,13 +1,13 @@
 import { useParams, Link } from 'react-router';
 import { useAppSelector } from '../../app/hooks.ts';
-import { selectPostById } from '../../features/posts/postSlice.ts';
 import { selectAllPosts } from '../../features/posts/postSlice.ts';
+import { selectUserById } from '../../features/users/userSlice.ts';
 
 const UsersPage = () => {
     const { userId } = useParams<{ userId: string }>();
 
     const user = useAppSelector((state) =>
-        userId ? selectPostById(state, userId) : undefined
+        userId ? selectUserById(state, userId) : undefined
     );
 
     const postsForUser = useAppSelector((state) => {
@@ -24,6 +24,11 @@ const UsersPage = () => {
         </li>
     ));
 
-    return <div>UsersPage</div>;
+    return (
+        <section>
+            <h2>{user ? user.name : 'User name not found'}</h2>
+            <ol>{postTitles}</ol>
+        </section>
+    );
 };
 export default UsersPage;
