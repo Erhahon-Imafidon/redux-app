@@ -12,9 +12,9 @@ const UsersList = () => {
     ));
 
     return (
-        <section>
-            <h2>Users</h2>
-            <ul>{renderedUsers}</ul>
+        <section className="mt-10 space-y-5">
+            <h2 className="text-4xl font-bold">Users</h2>
+            <ul className="list-disc">{renderedUsers}</ul>
         </section>
     );
 };

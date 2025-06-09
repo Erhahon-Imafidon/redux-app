@@ -146,6 +146,7 @@ const postsSlice = createSlice({
                         return {
                             ...post,
                             id: post.id.toString(),
+                            userId: post.userId.toString(),
                             content: post.body, // Map the body field to content
                             date: sub(new Date(), {
                                 minutes: min++,
@@ -264,6 +265,7 @@ export const selectPostById = (state: RootState, postId: string) => {
     return state.posts.posts.find((post) => post.id === postId);
 };
 
+// This selector was created to memoize the result of filtering posts by userId to prevent unnecessary re-renders if nothing has changed
 export const selectPostsByUserId = createSelector(
     [selectAllPosts, (state, userId) => userId],
     (posts, userId) => posts.filter((post) => post.userId === userId)

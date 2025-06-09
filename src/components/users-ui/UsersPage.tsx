@@ -1,9 +1,6 @@
 import { useParams, Link } from 'react-router';
 import { useAppSelector } from '../../app/hooks.ts';
-import {
-    selectAllPosts,
-    selectPostsByUserId,
-} from '../../features/posts/postSlice.ts';
+import { selectPostsByUserId } from '../../features/posts/postSlice.ts';
 import { selectUserById } from '../../features/users/userSlice.ts';
 
 const UsersPage = () => {
@@ -34,9 +31,11 @@ const UsersPage = () => {
     ));
 
     return (
-        <section>
-            <h2>{user ? user.name : 'User name not found'}</h2>
-            <ol>{postTitles}</ol>
+        <section className="mt-10 space-y-4">
+            <h2 className="text-3xl font-semibold">
+                {user ? user.name : 'User name not found'}
+            </h2>
+            <ol className="list-decimal text-xl">{postTitles}</ol>
         </section>
     );
 };
