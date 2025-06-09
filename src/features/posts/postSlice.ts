@@ -245,7 +245,7 @@ const postsSlice = createSlice({
 
                 if (!postId) {
                     console.error('Could not complete delete post');
-                    console.log(apiPost);
+                    // console.log(apiPost);
                     return;
                 }
 
