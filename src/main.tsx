@@ -8,8 +8,8 @@ import App from './App.tsx';
 import { fetchUsers } from './features/users/userSlice.ts';
 import { fetchPosts } from './features/posts/postSlice.ts';
 
-store.dispatch(fetchUsers()); // Fetch posts when the app starts
 store.dispatch(fetchPosts()); // Fetch users when the app starts
+store.dispatch(fetchUsers()); // Fetch posts when the app starts
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>

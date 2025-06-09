@@ -29,12 +29,17 @@ const userSlice = createSlice({
         builder.addCase(
             fetchUsers.fulfilled,
             (_state, action: PayloadAction<userStateProps[]>) => {
-                return action.payload;
+                return action.payload.map((user) => ({
+                    ...user,
+                    id: user.id.toString(),
+                }));
             }
         );
     },
 });
 
 export const selectAllUsers = (state: RootState) => state.users;
+export const selectUserById = (state: RootState, userId: string) =>
+    state.users.find((user) => user.id === userId);
 
 export default userSlice.reducer;
