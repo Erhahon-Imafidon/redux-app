@@ -7,6 +7,8 @@ import {
     EditPostForm,
 } from './components/index.ts';
 
+import { UsersPage, UsersList } from './components/users-ui/index.ts';
+
 const App = () => {
     return (
         <Routes>
@@ -16,6 +18,11 @@ const App = () => {
                     <Route index element={<AddPostForm />} />
                     <Route path=":postId" element={<SinglePostPage />} />
                     <Route path="edit/:postId" element={<EditPostForm />} />
+                </Route>
+
+                <Route path="user">
+                    <Route index element={<UsersList />} />
+                    <Route path=":userId" element={<UsersPage />} />
                 </Route>
             </Route>
         </Routes>
