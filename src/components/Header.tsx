@@ -24,6 +24,14 @@ const Header = () => {
                                 Post
                             </NavLink>
                         </li>
+                        <li>
+                            <NavLink
+                                to="/user"
+                                className="hover:underline focus:underline"
+                            >
+                                Users
+                            </NavLink>
+                        </li>
                     </ul>
                 </nav>
             </div>

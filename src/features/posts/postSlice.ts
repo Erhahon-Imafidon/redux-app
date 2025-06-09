@@ -3,6 +3,7 @@ import {
     nanoid,
     PayloadAction,
     createAsyncThunk,
+    createSelector,
 } from '@reduxjs/toolkit';
 import axios from 'axios';
 import type { RootState } from '../../app/store.ts';
@@ -262,6 +263,12 @@ export const getPostsError = (state: RootState) => state.posts.error;
 export const selectPostById = (state: RootState, postId: string) => {
     return state.posts.posts.find((post) => post.id === postId);
 };
+
+export const selectPostsByUserId = createSelector(
+    [selectAllPosts, (state, userId) => userId],
+    (posts, userId) => posts.filter((post) => post.userId === userId)
+);
+
 export const { postsAdded, reactionAdded } = postsSlice.actions;
 
 export default postsSlice.reducer;

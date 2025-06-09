@@ -29,7 +29,10 @@ const userSlice = createSlice({
         builder.addCase(
             fetchUsers.fulfilled,
             (_state, action: PayloadAction<userStateProps[]>) => {
-                return action.payload;
+                return action.payload.map((user) => ({
+                    ...user,
+                    id: user.id.toString(),
+                }));
             }
         );
     },
