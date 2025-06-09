@@ -22,8 +22,6 @@ const UsersPage = () => {
         selectPostsByUserId(state, userId)
     );
 
-    console.log(postsForUser);
-
     const postTitles = postsForUser.map((post) => (
         <li key={post.id}>
             <Link to={`/post/${post.id}`}>{post.title}</Link>
