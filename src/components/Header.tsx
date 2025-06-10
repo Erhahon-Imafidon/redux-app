@@ -11,8 +11,8 @@ const Header = () => {
             <div className="container flex justify-between items-center">
                 <h1 className="text-5xl">Redux Blog</h1>
 
-                <nav>
-                    <ul className="flex gap-x-10 text-2xl ">
+                <nav className="flex gap-x-10 text-2xl">
+                    <ul className="flex gap-x-10">
                         <li>
                             <NavLink
                                 to="/"
@@ -38,7 +38,10 @@ const Header = () => {
                             </NavLink>
                         </li>
                     </ul>
-                    <button onClick={() => dispatch(increaseCount())}>
+                    <button
+                        onClick={() => dispatch(increaseCount())}
+                        className="cursor-pointer"
+                    >
                         {postsCount}
                     </button>
                 </nav>
