@@ -267,7 +267,7 @@ export const selectPostById = (state: RootState, postId: string) => {
 
 // This selector was created to memoize the result of filtering posts by userId to prevent unnecessary re-renders if nothing has changed
 export const selectPostsByUserId = createSelector(
-    [selectAllPosts, (state, userId) => userId],
+    [selectAllPosts, (_state, userId) => userId],
     (posts, userId) => posts.filter((post) => post.userId === userId)
 );
 
