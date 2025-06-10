@@ -4,6 +4,7 @@ import {
     PayloadAction,
     createAsyncThunk,
     createSelector,
+    createEntityAdapter,
 } from '@reduxjs/toolkit';
 import axios from 'axios';
 import type { RootState } from '../../app/store.ts';
