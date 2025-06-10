@@ -1,4 +1,5 @@
 import { Link } from 'react-router';
+import React from 'react';
 import PostAuthor from './PostAuthor.tsx';
 import TimeAgo from './TimeAgo.tsx';
 import ReactionButtons from './ReactionButtons.tsx';
@@ -25,4 +26,5 @@ const PostsExcerpt = ({ post }: ReactionButtonsProps) => {
         </article>
     );
 };
-export default PostsExcerpt;
+
+export default React.memo(PostsExcerpt);

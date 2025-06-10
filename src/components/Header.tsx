@@ -1,13 +1,18 @@
 import { NavLink } from 'react-router';
+import { useAppSelector, useAppDispatch } from '../app/hooks.ts';
+import { getPostsCount, increaseCount } from '../features/posts/postSlice.ts';
 
 const Header = () => {
+    const dispatch = useAppDispatch();
+    const postsCount = useAppSelector(getPostsCount);
+
     return (
         <header className=" p-4 bg-purple-700 text-white sticky top-0 left-0">
             <div className="container flex justify-between items-center">
                 <h1 className="text-5xl">Redux Blog</h1>
 
-                <nav>
-                    <ul className="flex gap-x-10 text-2xl ">
+                <nav className="flex gap-x-10 text-2xl">
+                    <ul className="flex gap-x-10">
                         <li>
                             <NavLink
                                 to="/"
@@ -33,6 +38,12 @@ const Header = () => {
                             </NavLink>
                         </li>
                     </ul>
+                    <button
+                        onClick={() => dispatch(increaseCount())}
+                        className="cursor-pointer"
+                    >
+                        {postsCount}
+                    </button>
                 </nav>
             </div>
         </header>

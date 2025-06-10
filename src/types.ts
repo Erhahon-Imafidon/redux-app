@@ -18,6 +18,7 @@ export interface PostStateProps {
     posts: PostSliceState[];
     status: 'idle' | 'loading' | 'succeeded' | 'failed';
     error: string | null;
+    count: number;
 }
 
 export interface ReactionPayload {
