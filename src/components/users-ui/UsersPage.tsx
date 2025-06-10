@@ -10,14 +10,6 @@ const UsersPage = () => {
         userId ? selectUserById(state, userId) : undefined
     );
 
-    // const postsForUser = useAppSelector((state) => {
-    //     const allPosts = selectAllPosts(state);
-    //     return allPosts.filter((post) => {
-    //         console.log(post.userId);
-    //         return post.userId === userId;
-    //     });
-    // });
-
     const postsForUser = useAppSelector((state) =>
         selectPostsByUserId(state, userId)
     );
@@ -31,7 +23,7 @@ const UsersPage = () => {
     return (
         <section className="mt-10 space-y-4">
             <h2 className="text-3xl font-semibold">
-                {user ? user.name : 'User name not found'}
+                {user ? user.name : 'User not found'}
             </h2>
             <ol className="list-decimal text-xl">{postTitles}</ol>
         </section>
