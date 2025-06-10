@@ -21,6 +21,7 @@ const initialState: PostStateProps = {
     posts: [],
     status: 'idle',
     error: null,
+    count: 0, // This property is not used in the current code but can be useful for tracking the number of posts
 };
 
 const POSTS_URL = 'https://jsonplaceholder.typicode.com/posts';
@@ -99,35 +100,39 @@ const postsSlice = createSlice({
     name: 'posts',
     initialState,
     reducers: {
-        postsAdded: {
-            reducer(state, action: PayloadAction<PostSliceState>) {
-                state.posts.push(action.payload);
-            },
-            prepare(title: string, content: string, userId: string) {
-                return {
-                    payload: {
-                        id: nanoid(),
-                        title,
-                        content,
-                        date: new Date().toISOString(),
-                        userId,
-                        reactions: {
-                            thumbsUp: 0,
-                            wow: 0,
-                            heart: 0,
-                            rocket: 0,
-                            coffee: 0,
-                        },
-                    },
-                };
-            },
-        },
+        // This reducer is commented out because we are using createAsyncThunk for adding posts
+        // postsAdded: {
+        //     reducer(state, action: PayloadAction<PostSliceState>) {
+        //         state.posts.push(action.payload);
+        //     },
+        //     prepare(title: string, content: string, userId: string) {
+        //         return {
+        //             payload: {
+        //                 id: nanoid(),
+        //                 title,
+        //                 content,
+        //                 date: new Date().toISOString(),
+        //                 userId,
+        //                 reactions: {
+        //                     thumbsUp: 0,
+        //                     wow: 0,
+        //                     heart: 0,
+        //                     rocket: 0,
+        //                     coffee: 0,
+        //                 },
+        //             },
+        //         };
+        //     },
+        // },
         reactionAdded(state, actions: PayloadAction<ReactionPayload>) {
             const { postId, reaction } = actions.payload;
             const existingPost = state.posts.find((post) => post.id === postId);
             if (existingPost && existingPost.reactions) {
                 existingPost.reactions[reaction]++;
             }
+        },
+        increaseCount(state) {
+            state.count += 1;
         },
     },
 
@@ -259,6 +264,7 @@ const postsSlice = createSlice({
 export const selectAllPosts = (state: RootState) => state.posts.posts;
 export const getPostsStatus = (state: RootState) => state.posts.status;
 export const getPostsError = (state: RootState) => state.posts.error;
+export const getPostsCount = (state: RootState) => state.posts.count;
 
 // A selector for a single post by ID
 export const selectPostById = (state: RootState, postId: string) => {
@@ -271,6 +277,6 @@ export const selectPostsByUserId = createSelector(
     (posts, userId) => posts.filter((post) => post.userId === userId)
 );
 
-export const { postsAdded, reactionAdded } = postsSlice.actions;
+export const { reactionAdded, increaseCount } = postsSlice.actions;
 
 export default postsSlice.reducer;
