@@ -1,6 +1,11 @@
 import { NavLink } from 'react-router';
+import { useAppSelector, useAppDispatch } from '../app/hooks.ts';
+import { getPostsCount, increaseCount } from '../features/posts/postSlice.ts';
 
 const Header = () => {
+    const dispatch = useAppDispatch();
+    const postsCount = useAppSelector(getPostsCount);
+
     return (
         <header className=" p-4 bg-purple-700 text-white sticky top-0 left-0">
             <div className="container flex justify-between items-center">
@@ -33,6 +38,9 @@ const Header = () => {
                             </NavLink>
                         </li>
                     </ul>
+                    <button onClick={() => dispatch(increaseCount())}>
+                        {postsCount}
+                    </button>
                 </nav>
             </div>
         </header>
