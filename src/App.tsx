@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router';
+import { Routes, Route, Navigate } from 'react-router';
 import {
     PostsList,
     AddPostForm,
@@ -24,6 +24,8 @@ const App = () => {
                     <Route index element={<UsersList />} />
                     <Route path=":userId" element={<UsersPage />} />
                 </Route>
+
+                <Route path="*" element={<Navigate to="/" replace />} />
             </Route>
         </Routes>
     );
